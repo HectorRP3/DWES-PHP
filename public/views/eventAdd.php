@@ -1,6 +1,6 @@
 <?php
 session_start();
-    include_once "../views/component/carta.php";
+    require_once "../views/component/carta.php";
 ?>
 <!DOCTYPE html>  
 <html lang="en">
@@ -52,7 +52,9 @@ session_start();
 <body id="page-top">
 
 <!-- Navigation Bar -->
- <?php include 'nav-bar.php'; ?>
+ <?php
+     include 'nav-bar.php'; 
+     $fecha = date("Y-m-d");?>
 <!-- End of Navigation Bar -->
 
 <!-- Principal Content Start -->
@@ -109,7 +111,7 @@ session_start();
                 </div>
                 <div class="form-group">
                     <label for="Fecha">Fecha</label>
-                    <input type="date" class="form-control" id="Fecha" name="Fecha" placeholder="Fecha">
+                    <input type="date" class="form-control" id="Fecha" name="Fecha" placeholder="Fecha" min="<?=$fecha?>">
                 </div>
                 <div class="form-group">
                     <label for="FechaAprobacion">FechaAprobacion</label>
@@ -156,6 +158,60 @@ session_start();
 
         </section>
    </div><!-- End of index box -->
+   <div style="background-color:#fff; display:flex;justify-content:center;align-items:center;">
+            <h1>Filtrado de eventos</h1>
+            <!-- filtrar por nombre tipo de terreno tipo de evento -->
+             <section class="form-group">
+                <form action="../controller/EventFilterController.php" method="POST">
+                    <div class="form-group">
+                        <label for="Nombre">Nombre</label>
+                        <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="TipoTerreno">TipoTerreno</label>
+                        <select name="TipoTerreno" >
+                            <option value="default">No select</option>
+                            <option value="Incendio">Incendio</option>
+                            <option value="Colina">Colina</option>
+                            <option value="Ladera">Ladera</option>
+                            <option value="Soto Deteriorado">Soto Deteriorado</option>
+                            <option value="Cultivo Abandonado">Cultivo Abandonado</option>
+                            <option value="Talud">Talud</option>
+                            <option value="Terraplén">Terraplén</option>
+                            <option value="Finca Privada">Finca Privada</option>
+                            <option value="Erosionado">Erosionado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="TipoEvento">TipoEvento</label>
+                        <select name="TipoEvento">
+                            <option value="default">No select</option>
+                            <option value="Recogida de Semillas">Recogida de Semillas</option>
+                            <option value="Reforestación con Árboles Jóvenes">Reforestación con Árboles Jóvenes</option>
+                            <option value="Reforestación desde Semillas">Reforestación desde Semillas</option>
+                            <option value="Seguimiento de Riego">Seguimiento de Riego</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">Filtrar</button>
+             </section>
+
+        </div>
+        <h1>Eventos</h1>
+        <div style="display:flex;justify-content:center;align-items:center;">
+            
+            <div  class="tab-pane active" >
+                <div class="row popup-gallery">
+                    <?php
+                    if(isset($eventos)){
+                    
+                        foreach($eventos as $event){
+                            getEvent($event);
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
 
   <!-- Footer -->
    <?php include 'footer.php'; ?>

@@ -36,7 +36,5 @@
         // ver incorporar en la especies
         header("Location: ./HomeController.php");
 
-    }
-
 
 ?>

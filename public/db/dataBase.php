@@ -16,8 +16,16 @@ class ReforestaDB{
 
     public function connect(){
         if($this->pdo==null){
-            $this->pdo = new PDO("mysql:host=".$this->server.";dbname=".$this->db, $this->user, $this->pass);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            try{
+                $this->pdo = new PDO("mysql:host=".$this->server.";dbname=".$this->db, $this->user, $this->pass);
+                $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                //$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE__SILENT);
+                error_reporting(0);
+            }catch(PDOException $e){
+                //echo "Error: ".$e->getMessage();
+            }
+            
+           
         }
     }
     public function disconnect(){
@@ -34,6 +42,12 @@ class ReforestaDB{
     public function exectute(){
         return $this->pdo->execute();
     }
+    /**
+     * Ejecuta la query automaticamentee
+     * @param string $sql
+     * @param array $array
+     * @return PDOStatement
+     */
     public function executeQuery($sql, $array=[]) : PDOStatement{
         $stmt = $this->pdo->prepare($sql);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -47,17 +61,19 @@ class ReforestaDB{
         }
         return $stmt;
     }
-    // public function executeInsert($sql,$array=[]){
-    //     $stmt = $this->pdo->prepare($sql);
-    //     $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    //     foreach($array as $key=>$value){
-    //         $stmt->bindParam($key,$value);
-    //     }
-    //     $stmt->execute();
-    // }
+    /**
+     * Ejecuta el insert automaticamente
+     * @param string $query
+     */
     function executeInsert($query){
         $this->GetPDO()->query($query);
     }
+    /**
+     * Ejecuta la query automaticamentee
+     * @param string $sql
+     * @param array $bind
+     * @return PDOStatement
+     */
     function ExecuteSQLQuery($query,$bind=[]):PDOStatement{
         $statement=$this->GetPDO()->prepare($query);
         $statement->setFetchMode(PDO::FETCH_ASSOC);

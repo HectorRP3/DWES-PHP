@@ -29,22 +29,6 @@
 <!-- Principal Content Start-->
    <div id="about">
 
-    <!-- Header -->
-      <div class="row">
-         <div class="col-xs-12 intro">
-            <div class="carousel-inner">
-               <div class="item active">
-                <img class="img-responsive" src="images/about_us.jpg" alt="header picture">
-               </div>
-               <div class="carousel-caption">
-                  <h1>ABOUT US</h1>
-                  <p>About Us and our Services?</p>
-                  <hr>
-               </div>
-            </div>
-         </div>
-      </div>
-    <!-- End of header -->  
 
     <!-- Container Box -->
       <div class="container">

@@ -32,6 +32,17 @@
                     <i class="fa fa-eye"></i>
                     </a>
                 </li>
+                <?php
+                    if(isset($_SESSION['Nickname'])){
+                        if($_SESSION['Nickname'] == $event->AnfitrionID){
+                            echo "<li>";
+                            echo  "<a href='../controller/DeleteEventoController.php?event=$event->EventoID' data-toggle='tooltip' data-original-title='Eliminar evento'>";
+                            echo "<i class='fa fa-trash'></i>";
+                            echo "</a>";
+                            echo "</li>";
+                        }
+                    }
+                ?>
                 </ul>
             </div>
             <div class="row box-content">

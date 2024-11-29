@@ -1,5 +1,6 @@
 <?php
   require_once "../views/component/carta.php"; 
+  require_once "../views/component/carta-Species.php";
 ?>
 <!DOCTYPE html>  
 
@@ -58,8 +59,8 @@
             <thead>
               <tr>
                 <td><a class="link active" href="#category1" data-toggle="tab">Eventos</a></td>
-                        <!-- <td><a class="link" href="#category2" data-toggle="tab">category II</a></td>
-                        <td><a class="link" href="#category3" data-toggle="tab">category III</a></td> -->
+                <td><a class="link" href="#category2" data-toggle="tab">Species</a></td>
+                        <!-- <td><a class="link" href="#category3" data-toggle="tab">category III</a></td> --> 
               </tr>
             </thead>
           </table>
@@ -78,6 +79,15 @@
                 <?php
                   foreach ($events as $event) {
                     getEvent($event); 
+                  }
+                ?>
+              </div>
+        </div>
+        <div id="category2" class="tab-pane">
+              <div class="row popup-gallery">
+                <?php
+                  foreach ($species as $specie) {
+                    getSpecie($specie); 
                   }
                 ?>
               </div>
@@ -105,7 +115,7 @@
         <form class="form-horizontal">
           <div class="form-group">
             <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-            <input class="form-control" type="text" placeholder="Type here your email address">
+         
 
             <?php
                 if($userSuscripcion){

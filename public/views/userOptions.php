@@ -48,15 +48,30 @@
 
 <!-- Principal Content Start -->
    <div style="background-color:#000; display:flex;justify-content:center;align-items:center;"id="index" class="fondoFormulario">
-        <section class="sectionFormulario">
-            <div>
-                <?php
-                    if(isset($_GET['error'])){
-                        echo "<p style='color:red;'>".$_GET['error']."</p>";
-                    }
-                ?>
-            </div>
-            <div class="form-group form-inline">
+            <section class="sectionFormulario">
+                <div>
+                    <?php
+                        if(isset($_GET['error'])){
+                            echo "<p style='color:red;'>".$_GET['error']."</p>";
+                        }
+                    ?>
+                </div>
+                <form enctype="multipart/form-data" action="../controller/UserEditController.php" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Repite Password:</label>
+                        <input type="password" class="form-control" name="password2">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Editar">
+                </form>
+            </section>
                 <a href="../controller/UserOptionsController.php?logout=true" class="btn btn-danger">Log out</a>
             </div>
         </section>

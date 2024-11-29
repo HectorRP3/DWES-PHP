@@ -37,7 +37,11 @@ class User{
         }
     }
 
-
+    /**
+     * Devuelve todos los usuarios
+     * @param string $nickname
+     * @return array
+     */
     public function getUser($nickname){
         reforestaDB->connect();
         $stmt = $pdo->executeQuery("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasea = :password;");
@@ -46,7 +50,9 @@ class User{
         $user = new User($row['Nickname'], $row['Nombre'], $row['Apellidos'], $row['Email'], $row['Karma'], $row['Suscrito'], $row['FechaCreacion'], $row['Contraseña']);
         return $user;
     }
-
+    /**
+     * Añade un usuario a la base de datos
+     */
     function addUser(){
         reforestaDB->connect();
         reforestaDB->beginTransaction();
@@ -54,33 +60,42 @@ class User{
             reforestaDB->executeInsert("INSERT INTO Usuarios (Nickname, Nombre, Apellidos, Email, Karma, Suscrito, FechaCreacion,Contrasea) VALUES 
             ('$this->nickname','$this->nombre','$this->apellidos','$this->email','$this->karma','$this->suscrito','$this->fechaCreacion','$this->password');");
             reforestaDB->commit();
+            reofestaDB->disconnect();
         }catch(PDOException $e){
             reforestaDB->rollBack();
             echo "Error: ".$e->getMessage();
         }
     }
-
-    // public function getUser($nickname, $password){
-    //     reforestaDB->connect();
-    //     $stmt = $pdo->executeQuery("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasea = :password;" , [":nickname"=>$nickname,":password"=>$password]);
-    //     $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    //     $row = $stmt->fetch();
-    //     $user = new User($row['Nickname'], $row['Nombre'], $row['Apellidos'], $row['Email'], $row['Karma'], $row['Suscrito'], $row['FechaCreacion'], $row['Contraseña']);
-    //     return $user;
-    // }
+    /**
+     * Comprueba si el usuario y la contraseña coinciden
+     * @param string $nickname
+     * @param string $password
+     * @return bool
+     */
     public function checkUserPassword($nickname, $password){
         reforestaDB->connect();
-        $stmt =  reforestaDB->GetPDO()->prepare("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasea = :password;" );
-        $stmt->bindParam(":nickname",$nickname);
-        $stmt->bindParam(":password",$password);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
-        if($row){
-            return true;
-        }else{
-            return false;
+        try{
+            $stmt =  reforestaDB->GetPDO()->prepare("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasea = :password;" );
+            $stmt->bindParam(":nickname",$nickname);
+            $stmt->bindParam(":password",$password);
+            $stmt->execute();
+            $row = $stmt->fetchAll();
+            reforestaDB->disconnect();
+            if($row){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
+            echo "Error: ".$e->getMessage();
         }
+        
     }
+    /**
+     * Devuelve el karma de un usuario
+     * @param string $nickname
+     * @return int
+     */
     public static function getKarma($nickname){
         reforestaDB->connect();
         $stmt =  reforestaDB->GetPDO()->prepare("SELECT Karma FROM Usuarios WHERE Nickname = :nickname;" );
@@ -89,40 +104,92 @@ class User{
         $row = $stmt->fetch();
         return $row['Karma'];
     }
-
+    /**
+     * Actualiza la suscripcion de un usuario
+     * @param string $nickname
+     */
     public static function updateSuscripcion($nickname){
         reforestaDB->connect();
         $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Suscrito = 1 WHERE Nickname = :nickname;" );
         $stmt->bindParam(":nickname",$nickname);
         $stmt->execute();
     }
-
+    /**
+     * Comprueba si un usuario esta suscrito
+     * @param string $nickname
+     * @return bool
+     */
     public static function checkSuscription($nickname){
         reforestaDB->connect();
-        $stmt =  reforestaDB->GetPDO()->prepare("SELECT Suscrito FROM Usuarios WHERE Nickname = :nickname;" );
-        $stmt->bindParam(":nickname",$nickname);
-        $stmt->execute();
-        $row = $stmt->fetch();
-        if($row['Suscrito'] == 1){
-            return true;
-        }else{
-            return false;
+        try{
+            $stmt =  reforestaDB->GetPDO()->prepare("SELECT Suscrito FROM Usuarios WHERE Nickname = :nickname;" );
+            $stmt->bindParam(":nickname",$nickname);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            reforestaDB->disconnect();
+            if($row['Suscrito'] == 1){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(PDOException $e){
         }
     }
+    /**
+     * Actualiza el karma de un usuario
+     * @param string $nickname
+     * @param int $karma
+     */
     public static function updateKarma($nickname, $karma){
         reforestaDB->connect();
-        $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Karma = :karma WHERE Nickname = :nickname;");
-        $stmt->bindParam(":nickname",$nickname);
-        $stmt->bindParam(":karma",$karma);
-        $stmt->execute();
+        try{
+            $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Karma = :karma WHERE Nickname = :nickname;");
+            $stmt->bindParam(":nickname",$nickname);
+            $stmt->bindParam(":karma",$karma);
+            $stmt->execute();
+            reforestaDB->disconnect();
+        }catch(PDOException $e){
+            echo "Error: ".$e->getMessage();
+        }
     }
-
+    /**
+     * Devuelve el usuario con mas karma
+     * @return array
+     */
     public static function getUsuarioMasKarma(){
         reforestaDB->connect();
-        $stmt =  reforestaDB->GetPDO()->prepare("SELECT Nickname, Karma FROM Usuarios WHERE Karma = (SELECT MAX(Karma) FROM Usuarios);");
-        $stmt->execute();
-        $row = $stmt->fetch();
+        try{
+            $stmt =  reforestaDB->GetPDO()->prepare("SELECT Nickname, Karma FROM Usuarios WHERE Karma = (SELECT MAX(Karma) FROM Usuarios);");
+            $stmt->execute();
+            $row = $stmt->fetch();
+            reforestaDB->disconnect();
+        }catch(PDOException $e){
+            echo "Error: ".$e->getMessage();
+        }
         return $row;
+    }
+    /**
+     * Actualiza los datos de un usuario
+     * @param string $nickname
+     * @param string $email
+     * @param string $password
+     */
+    public static function updateUser($nickname,$email,$password){
+        reforestaDB->connect();
+        reforestaDB->beginTransaction();
+        try{
+            $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Email = :email, Contrasea = :password WHERE Nickname = :nickname;");
+            $stmt->bindParam(":nickname",$nickname);
+            $stmt->bindParam(":email",$email);
+            $stmt->bindParam(":password",$password);
+            $stmt->execute();
+            reforestaDB->commit();
+            reforestaDB->disconnect();
+        }catch(PDOException $e){
+            reforestaDB->rollBack();
+            echo "Error: ".$e->getMessage();
+        }
+        
     }
 
 }
