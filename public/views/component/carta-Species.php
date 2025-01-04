@@ -22,6 +22,10 @@
                     <i class="fa fa-info"></i>
                     </a>
                 </li>
+                <li class="lien">
+                    <a href="../controller/SpecieController.php?action=2&specie=<?=$specie->NombreCientifico?>" data-toggle="tooltip" data-original-title="Ver detalle">
+                    <i class="fa fa-eye"></i>
+                    </a>
                 </ul>
             </div>
             <div class="row box-content">

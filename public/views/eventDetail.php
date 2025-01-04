@@ -53,6 +53,68 @@
         <p>Especies: <?=$especie?></p>
     </section> 
 </div><!-- End of index box -->
+<div style="background-color:#000; display:flex;justify-content:center;align-items:center;">
+<section>
+        <?php
+            if(isset($_GET['error'])){
+                echo "<h1 style='color:red'>Error al subir el evento</h1>";
+            }
+        ?>
+        <form action="../controller/EventController.php?action=2&event=<?php echo $evento->EventoID ?>" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?=$evento->id?>">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="<?=$evento->Nombre?>" required>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripcion:</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" required><?=$evento->Descripcion?></textarea>
+            </div>
+            <div class="form-group">
+                <label for="provincia">Provincia:</label>
+                <input type="text" class="form-control" id="provincia" name="provincia" value="<?=$evento->Provincia?>" required>
+            </div>
+            <div class="form-group">
+                <label for="localidad">Localidad:</label>
+                <input type="text" class="form-control" id="localidad" name="localidad" value="<?=$evento->Localidad?>" required>
+            </div>
+            <div class="form-group">
+                <label for="TipoTerreno">TipoTerreno</label>
+                <select name="TipoTerreno" id="TipoTerreno">
+                    <option value="default" <?= $evento->TipoTerreno == 'default' ? 'selected' : '' ?>>No select</option>
+                    <option value="Incendio" <?= $evento->TipoTerreno == 'Incendio' ? 'selected' : '' ?>>Incendio</option>
+                    <option value="Colina" <?= $evento->TipoTerreno == 'Colina' ? 'selected' : '' ?>>Colina</option>
+                    <option value="Ladera" <?= $evento->TipoTerreno == 'Ladera' ? 'selected' : '' ?>>Ladera</option>
+                    <option value="Soto Deteriorado" <?= $evento->TipoTerreno == 'Soto Deteriorado' ? 'selected' : '' ?>>Soto Deteriorado</option>
+                    <option value="Cultivo Abandonado" <?= $evento->TipoTerreno == 'Cultivo Abandonado' ? 'selected' : '' ?>>Cultivo Abandonado</option>
+                    <option value="Talud" <?= $evento->TipoTerreno == 'Talud' ? 'selected' : '' ?>>Talud</option>
+                    <option value="Terraplén" <?= $evento->TipoTerreno == 'Terraplén' ? 'selected' : '' ?>>Terraplén</option>
+                    <option value="Finca Privada" <?= $evento->TipoTerreno == 'Finca Privada' ? 'selected' : '' ?>>Finca Privada</option>
+                    <option value="Erosionado" <?= $evento->TipoTerreno == 'Erosionado' ? 'selected' : '' ?>>Erosionado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="TipoEvento">TipoEvento</label>
+                <select name="TipoEvento" id="TipoEvento">
+                    <option value="default" <?= $evento->TipoEvento == 'default' ? 'selected' : '' ?>>No select</option>
+                    <option value="Recogida de Semillas" <?= $evento->TipoEvento == 'Recogida de Semillas' ? 'selected' : '' ?>>Recogida de Semillas</option>
+                    <option value="Reforestación con Árboles Jóvenes" <?= $evento->TipoEvento == 'Reforestación con Árboles Jóvenes' ? 'selected' : '' ?>>Reforestación con Árboles Jóvenes</option>
+                    <option value="Reforestación desde Semillas" <?= $evento->TipoEvento == 'Reforestación desde Semillas' ? 'selected' : '' ?>>Reforestación desde Semillas</option>
+                    <option value="Seguimiento de Riego" <?= $evento->TipoEvento == 'Seguimiento de Riego' ? 'selected' : '' ?>>Seguimiento de Riego</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" class="form-control" id="fecha" name="fecha" value="<?=$evento->Fecha?>" required>
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen:</label>
+                <input type="file" class="form-control" id="imagen" name="imagen" value="<?=$evento->ImagenURL?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Evento</button>
+        </form>
+    </section>
+</div>
 
   <!-- Footer -->
    <?php include 'footer.php'; ?>

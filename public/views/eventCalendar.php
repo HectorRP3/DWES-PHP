@@ -1,3 +1,8 @@
+<?php
+    require_once '../controller/EventController.php';
+    require_once "../views/component/carta.php"; 
+
+?>
 <!DOCTYPE html>  
 <html lang="en">
 <head>
@@ -23,17 +28,6 @@
     <![endif]-->
 </head>
 <style>
-    .sectionFormulario{
-        width:80%; 
-        padding:10%;
-
-        & form > input{
-            color:#000;
-        }
-        & form  label{
-            color:#fff;
-        }
-    }
     .fondoFormulario{
         background-color:#000;
         display:flex;
@@ -42,33 +36,26 @@
     }
 </style>
 <body id="page-top">
+
 <!-- Navigation Bar -->
  <?php include 'nav-bar.php'; ?>
 <!-- End of Navigation Bar -->
 
 <!-- Principal Content Start -->
-   <div style="background-color:#000; display:flex;justify-content:center;align-items:center;"id="index" class="fondoFormulario">
-        <section class="sectionFormulario">
-            <div>
+<div style="background-color:#000; display:flex;justify-content:center;align-items:center;"id="index" class="fondoFormulario">
+    <h1>Eventos de los proximos 3 meses</h1>
+    <section>
+        <div id="category1" class="tab-pane active" >
+            <div class="row popup-gallery">
                 <?php
-                    if(isset($_GET['error'])){
-                        echo "<p style='color:red;'>Credenciales incorrectas</p>";
+                    foreach($eventos as $evento){
+                        getEvent($evento); 
                     }
                 ?>
             </div>
-            <form enctype="multipart/form-data" action="../controller/UserController.php?action=3" method="POST">
-                <div class="form-group">
-                    <label for="nickname">Nickname</label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </section>
-   </div><!-- End of index box -->
+        </div>
+    </section>
+</div><!-- End of index box -->
 
   <!-- Footer -->
    <?php include 'footer.php'; ?>

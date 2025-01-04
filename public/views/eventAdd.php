@@ -1,5 +1,4 @@
 <?php
-session_start();
     require_once "../views/component/carta.php";
 ?>
 <!DOCTYPE html>  
@@ -67,7 +66,7 @@ session_start();
                     }
                 ?>
             </div>
-            <form enctype="multipart/form-data" action="../controller/EventAddController.php" method="POST">
+            <form enctype="multipart/form-data" action="../controller/EventController.php?action=1" method="POST">
                 <div class="form-group">
                     <label for="Nombre">Nombre</label>
                     <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Nombre">
@@ -113,19 +112,7 @@ session_start();
                     <label for="Fecha">Fecha</label>
                     <input type="date" class="form-control" id="Fecha" name="Fecha" placeholder="Fecha" min="<?=$fecha?>">
                 </div>
-                <div class="form-group">
-                    <label for="FechaAprobacion">FechaAprobacion</label>
-                    <input type="date" class="form-control" id="FechaAprobacion" name="FechaAprobacion" placeholder="FechaAprobacion">
-                </div>
-                <!-- Los participantes se uniran despues de pponerlo pondre un boton para que directamente se una -->
-                <!-- <div class="form-group">
-                    <label for="participantes">participantes</label>
-                    <input type="text" class="form-control" id="participantes" name="participantes" placeholder="participantes">
-                </div> -->
-                <div class="form-group">
-                    <!-- HACER SUN SELECT CON SUS OPCIONES PARA QUE SALGAN LAS ESPECIES Y SI NO HAY ESPECIES BOTON PARA DARLE DE NUEVO 
-                
-                    <input type="text" class="form-control" id="especies" name="especies" placeholder="especies"> -->
+                <div class="form-group">                
                     <label for="especies">especies</label>
                     <select name="especie" >
                         <option value="default">No select</option>
@@ -146,7 +133,7 @@ session_start();
                     <input type="file" class="form-control" id="imagen" name="imagen" placeholder="imagen">
                 </div>
                 <?php
-                    if(isset($_SESSION['Nickname'])){
+                    if(isset($_SESSION['nickname'])){
                         echo  "<button type='submit' class='btn btn-default'>Enviar</button>";
                     }else{
                         echo "<p class='inicioSesion'>Debes iniciar sesion para poder añadir un evento</p>";
@@ -158,11 +145,75 @@ session_start();
 
         </section>
    </div><!-- End of index box -->
-   <div style="background-color:#fff; display:flex;justify-content:center;align-items:center;">
-            <h1>Filtrado de eventos</h1>
-            <!-- filtrar por nombre tipo de terreno tipo de evento -->
-             <section class="form-group">
-                <form action="../controller/EventFilterController.php" method="POST">
+    <?php
+        if(isset($error2)){
+            echo "<h1>Falta rellenar el campo del filtro</h1>";
+        }
+
+    ?>
+        <div style="background-color:#fff; display:flex;justify-content:center;align-items:center;">
+            <section class="form-group">
+                 <h1>Filtrado de eventos</h1>
+                <form action="../controller/EventController.php?action=4&event=nombre" method="POST">
+                    <div class="form-group">
+                        <label for="filter">Nombre del evento</label>
+                        <input type="text" class="form-control" id="Nombre" name="filter" placeholder="Nombre">
+                        <button type="submit" class="btn btn-default">Filtrar por nombre</button> 
+                    </div>
+                </form>
+                <form action="../controller/EventController.php?action=4&event=ubicacion" method="POST">
+                    <div class="form-group">
+                        <label for="filter">Ubicacion del evento</label>
+                        <input type="text" class="form-control" id="ubicacion" name="filter" placeholder="ubicacion">
+                        <button type="submit" class="btn btn-default">Filtrar por ubicacion</button> 
+                    </div>
+                </form>
+                <form action="../controller/EventController.php?action=4&event=fecha" method="POST"> 
+                    <div class="form-group">
+                        <label for="filter">Fecha del evento</label>
+                        <input type="date" class="form-control" id="fecha" name="filter" placeholder="fecha">
+                        <button type="submit" class="btn btn-default">Filtrar por fecha</button> 
+                    </div>
+                </form>
+                <form action="../controller/EventController.php?action=4&event=user" method="POST">
+                    <div class="form-group">
+                        <label for="filter">Usuario que propone el evento</label>
+                        <input type="text" class="form-control" id="user" name="filter" placeholder="user" >
+                        <button type="submit" class="btn btn-default">Filtrar por user</button> 
+                    </div>
+                </form>
+                <form action="../controller/EventController.php?action=4&event=terreno" method="POST">
+                    <div class="form-group">
+                        <label for="filter">Tipo de terreno</label>
+                        <select name="filter" >
+                            <option value="Incendio">Incendio</option>
+                            <option value="Colina">Colina</option>
+                            <option value="Ladera">Ladera</option>
+                            <option value="Soto Deteriorado">Soto Deteriorado</option>
+                            <option value="Cultivo Abandonado">Cultivo Abandonado</option>
+                            <option value="Talud">Talud</option>
+                            <option value="Terraplén">Terraplén</option>
+                            <option value="Finca Privada">Finca Privada</option>
+                            <option value="Erosionado">Erosionado</option>
+                        </select>
+                        <button type="submit" class="btn btn-default">Filtrar por terreno</button> 
+                    </div>
+                </form>
+                <form action="../controller/EventController.php?action=4&event=evento" method="POST">
+                    <div class="form-group">
+                        <label for="filter">Tipo de evento</label>
+                        <select name="filter">
+                            <option value="Recogida de Semillas">Recogida de Semillas</option>
+                            <option value="Reforestación con Árboles Jóvenes">Reforestación con Árboles Jóvenes</option>
+                            <option value="Reforestación desde Semillas">Reforestación desde Semillas</option>
+                            <option value="Seguimiento de Riego">Seguimiento de Riego</option>
+                        </select>
+                        <button type="submit" class="btn btn-default">Filtrar por evento</button> 
+                    </div>
+                </form>
+                
+                
+            <!--<form action="../controller/EventFilterController.php" method="POST">
                     <div class="form-group">
                         <label for="Nombre">Nombre</label>
                         <input type="text" class="form-control" id="Nombre" name="Nombre" placeholder="Nombre">
@@ -192,8 +243,9 @@ session_start();
                             <option value="Seguimiento de Riego">Seguimiento de Riego</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-default">Filtrar</button>
-             </section>
+                    <button type="submit" class="btn btn-default">Filtrar</button> 
+                </form>-->
+            </section>
 
         </div>
         <h1>Eventos</h1>
@@ -202,11 +254,13 @@ session_start();
             <div  class="tab-pane active" >
                 <div class="row popup-gallery">
                     <?php
-                    if(isset($eventos)){
+                    if(isset($eventos) && !empty($eventos)){
                     
                         foreach($eventos as $event){
                             getEvent($event);
                         }
+                    }else{
+                        echo "<h1>NO HAY LA BUSQUEDA CON ESE FILTRO</h1>";
                     }
                     ?>
                 </div>

@@ -9,7 +9,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <title>PhotographItem-Responsive Theme</title>
+	  <title>ReforestaDB</title>
+    <link rel="icon" type="image/png" href="../images/logo/reforesta.png">
 
   	<!-- Bootstrap core css -->
   	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
@@ -60,7 +61,6 @@
               <tr>
                 <td><a class="link active" href="#category1" data-toggle="tab">Eventos</a></td>
                 <td><a class="link" href="#category2" data-toggle="tab">Species</a></td>
-                        <!-- <td><a class="link" href="#category3" data-toggle="tab">category III</a></td> --> 
               </tr>
             </thead>
           </table>
@@ -107,7 +107,6 @@
       </div>
       <!-- End of Navigation Table Content -->
     </div><!-- End of Index-body box -->
-
     <!-- Newsletter form -->
       <div class="index-form text-center">
         <h3>SUSCRIBE TO OUR NEWSLETTER </h3>
@@ -118,14 +117,14 @@
          
 
             <?php
-                if($userSuscripcion){
+                if($suscripcion){
                     echo '<p style="font-size:2rem; color: red" class="text-center">Ya estas suscrito</p>';
                   
-                }else if(isset($_SESSION['Nickname'])){
-                    echo '<a href="../controller/SuscribeController.php" class="btn btn-lg sr-button">SUBSCRIBE</a>';
+                }else if(isset($_SESSION['nickname'])){
+                    echo '<a href="../controller/UserController.php?action=7" class="btn btn-lg sr-button">SUBSCRIBE</a>';
                 }else{
 
-                  echo '<a href="../controller/LoginController.php" class="btn btn-lg sr-button2">Inicia Sesión</a>';
+                  echo '<a href="../controller/UserController.php?action=3" class="btn btn-lg sr-button2">Inicia Sesión</a>';
                 }
             ?>
             </div>

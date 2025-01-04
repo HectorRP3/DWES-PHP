@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>  
 <html lang="en">
 <head>
@@ -64,7 +66,7 @@
                     }
                 ?>
             </div>
-            <form action="../controller/UserAddController.php" method="POST">
+            <form action="../controller/UserController.php?action=2" method="POST">
             <div class="form-group">
                 <label for="nickname">Nickname</label>
                 <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname">

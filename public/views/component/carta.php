@@ -17,18 +17,20 @@
                     <i class="fa fa-eye"></i>
                     </a>
                 </li>
+                <?php if(isset($_SESSION['nickname'])){ ?>
                 <li>
-                    <a href="../controller/FollowEventController.php?event=<?=$event->EventoID?>" data-toggle="tooltip" data-original-title="Unirte al evento">
+                    <a href="../controller/UserController.php?action=6&event=<?=$event->EventoID?>" data-toggle="tooltip" data-original-title="Unirte al evento">
                         <i class="fa fa-heart"></i>
                     </a>
                     </li>';
                 <li>
+                <?php } ?>	
                     <a href="#" data-toggle="tooltip" data-original-title="<?=$event->Nombre?>">
                     <i class="fa fa-info"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="../controller/EventDetailController.php?event=<?=$event->EventoID?>" data-toggle="tooltip" data-original-title="Ver detalle">
+                    <a href="../controller/EventController.php?action=3&event=<?=$event->EventoID?>" data-toggle="tooltip" data-original-title="Ver detalle">
                     <i class="fa fa-eye"></i>
                     </a>
                 </li>

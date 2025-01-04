@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>  
 <html lang="en">
 <head>
@@ -56,23 +58,38 @@
                         }
                     ?>
                 </div>
-                <form enctype="multipart/form-data" action="../controller/UserEditController.php" method="POST">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" name="email">
+                <form enctype="multipart/form-data" action="../controller/UserController.php?action=5" method="POST">
+                   <div class="form-group">
+                        <label for="nickname">Nickname</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $user->__get("nickname") ?>">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control" name="password">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo $user->__get("nombre") ?>">
                     </div>
                     <div class="form-group">
-                        <label for="password2">Repite Password:</label>
-                        <input type="password" class="form-control" name="password2">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" value="<?php echo $user->__get("apellidos")?>">
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Editar">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?php echo $user->__get("email") ?>">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                   
                 </form>
+                <form action="../controller/UserController.php?action=5&user=1" method="POST">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Password</button>
+                </form>
+                    <h1 style="color:white">Tu KARMA</h1>
+                    <p style="color:white"><?php echo $user->__get("karma") ?></p>
             </section>
-                <a href="../controller/UserOptionsController.php?logout=true" class="btn btn-danger">Log out</a>
+                <a href="../controller/UserController.php?action=8" class="btn btn-danger">Log out</a>
             </div>
         </section>
    </div><!-- End of index box -->

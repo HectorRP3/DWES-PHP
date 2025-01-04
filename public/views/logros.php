@@ -50,7 +50,37 @@
             <img style="height:200px" src="<?=$especie->ImagenURL?>" alt="Foto de especie">
         </section>
    </div><!-- End of index box -->
-
+<div style="background-color:#000; display:flex;justify-content:center;align-items:center;">
+    <form enctype="multipart/form-data" action="../controller/SpecieController.php?action=4" method="post">
+        <select name="filter">
+            <option value="year" default>Año</option>
+            <option value="beneficios">Beneficios</option>
+            <option value="location">Localidad</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+    <div style="color:white">
+        <h1>LogrosFiltrados</h1>
+        <p>En esta sección se mostrarán los logros que se han conseguido en reforesta</p>
+        <h1>Evento con mas participantes</h1>
+        <p>El evento con mas participantes fue el evento <?=$eventoCompleto->Nombre?> con <?=$evento['COUNT(UserID)']?></p>
+        <h1>Usuario con mas Karma</h1>
+        <p>El usuario con mas karma es <?=$usuario['Nickname']?> con <?=$usuario['Karma']?></p>
+        <h1>Specie con mas cantidad de plantados</h1>
+        <p>La especie con mas cantidad de plantados es <?=$especie->NombreCientifico?></p>
+        <img style="height:200px" src="<?=$especie->ImagenURL?>" alt="Foto de especie">
+        <?php
+            if(isset($eventoConMasBeneficios)){
+                echo "<h1>Evento con mas beneficios</h1>";
+                echo "<p>El evento con mas beneficios fue el evento ".$eventoConMasBeneficios['Nombre']." beneficios</p>";
+            }
+            if(isset($eventoConMasLocalidad)){
+                echo "<h1>Evento que participa en mas localidades </h1>";
+                echo "<p>El evento con mas localidad fue el evento ".$eventoConMasLocalidad['Nombre']." localidad</p>";
+            }
+            ?>
+    </div>
+</div>
   <!-- Footer -->
    <?php include 'footer.php'; ?>
   <!-- End of Footer -->

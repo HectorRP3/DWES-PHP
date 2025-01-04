@@ -1,3 +1,6 @@
+<?php
+    require_once "../views/component/carta-Species.php";
+?>
 <!DOCTYPE html>  
 <html lang="en">
 <head>
@@ -45,28 +48,23 @@
 <!-- Navigation Bar -->
  <?php include 'nav-bar.php'; ?>
 <!-- End of Navigation Bar -->
-
+<div style="background-color:#000; display:flex;justify-content:center;align-items:center;" class="fondoFormulario">
+    <h2 style="color:white">Species que han participado o que van a participar en los siguiente eventos</h2>
+</div>
 <!-- Principal Content Start -->
    <div style="background-color:#000; display:flex;justify-content:center;align-items:center;"id="index" class="fondoFormulario">
+    
         <section class="sectionFormulario">
-            <div>
+        <div id="category2" class="tab-pane">
+              <div class="row popup-gallery">
                 <?php
-                    if(isset($_GET['error'])){
-                        echo "<p style='color:red;'>Credenciales incorrectas</p>";
-                    }
+                  foreach ($species as $specie) {
+                    getSpecie($specie); 
+                  }
                 ?>
-            </div>
-            <form enctype="multipart/form-data" action="../controller/UserController.php?action=3" method="POST">
-                <div class="form-group">
-                    <label for="nickname">Nickname</label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+              </div>
+        </div>
+
         </section>
    </div><!-- End of index box -->
 

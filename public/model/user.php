@@ -8,7 +8,6 @@ class User{
     private $karma;
     private $suscrito;
     private $fechaCreacion;
-    //hacer futura implementacion contraseña
     private $password;
 
     
@@ -17,7 +16,7 @@ class User{
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
         $this->email = $email;
-        $this->karma = 0;
+        $this->karma = $karma;
         $this->suscrito = $suscrito;
         $this->fechaCreacion = $fechaCreacion;
         $this->password = $password;
@@ -38,16 +37,25 @@ class User{
     }
 
     /**
-     * Devuelve todos los usuarios
+     * Devuelve el usuario entero con el nickname
      * @param string $nickname
-     * @return array
+     * @return User
      */
-    public function getUser($nickname){
+    public static function getUser($nickname){
         reforestaDB->connect();
-        $stmt = $pdo->executeQuery("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasea = :password;");
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-        $row = $stmt->fetch();
-        $user = new User($row['Nickname'], $row['Nombre'], $row['Apellidos'], $row['Email'], $row['Karma'], $row['Suscrito'], $row['FechaCreacion'], $row['Contraseña']);
+        reforestaDB->beginTransaction();
+        try{
+            $stmt = reforestaDB->GetPdo()->prepare("SELECT * FROM Usuarios WHERE Nickname = :nickname");
+            $stmt->bindParam(":nickname",$nickname);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            $user = new User($row['Nickname'], $row['Nombre'], $row['Apellidos'], $row['Email'], $row['Karma'], $row['Suscrito'], $row['FechaCreacion'], $row['Contrasenya']);
+            reforestaDB->commit();
+        }catch(PDOException $e){
+            reforestaDB->rollBack();
+        }finally{
+            reforestaDB->disconnect();
+        }
         return $user;
     }
     /**
@@ -57,13 +65,22 @@ class User{
         reforestaDB->connect();
         reforestaDB->beginTransaction();
         try{
-            reforestaDB->executeInsert("INSERT INTO Usuarios (Nickname, Nombre, Apellidos, Email, Karma, Suscrito, FechaCreacion,Contrasea) VALUES 
-            ('$this->nickname','$this->nombre','$this->apellidos','$this->email','$this->karma','$this->suscrito','$this->fechaCreacion','$this->password');");
+            $stmt = reforestaDB->GetPdo()->prepare("INSERT INTO Usuarios (Nickname, Nombre, Apellidos, Email, Karma, Suscrito, FechaCreacion,Contrasenya) VALUES (?,?,?,?,?,?,?,?);");
+            $stmt->bindParam(1,$this->nickname);
+            $stmt->bindParam(2,$this->nombre);
+            $stmt->bindParam(3,$this->apellidos);
+            $stmt->bindParam(4,$this->email);
+            $stmt->bindParam(5,$this->karma);
+            $stmt->bindParam(6,$this->suscrito);
+            $stmt->bindParam(7,$this->fechaCreacion);
+            $stmt->bindParam(8,$this->password);
+            $stmt->execute();
             reforestaDB->commit();
-            reofestaDB->disconnect();
         }catch(PDOException $e){
             reforestaDB->rollBack();
-            echo "Error: ".$e->getMessage();
+           // echo "Error: ".$e->getMessage();
+        }finally{
+            reforestaDB->disconnect();
         }
     }
     /**
@@ -75,7 +92,7 @@ class User{
     public function checkUserPassword($nickname, $password){
         reforestaDB->connect();
         try{
-            $stmt =  reforestaDB->GetPDO()->prepare("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasea = :password;" );
+            $stmt =  reforestaDB->GetPDO()->prepare("SELECT * FROM Usuarios WHERE Nickname = :nickname AND Contrasenya = :password;" );
             $stmt->bindParam(":nickname",$nickname);
             $stmt->bindParam(":password",$password);
             $stmt->execute();
@@ -119,7 +136,7 @@ class User{
      * @param string $nickname
      * @return bool
      */
-    public static function checkSuscription($nickname){
+    public static function checkSuscription($nickname) : bool{
         reforestaDB->connect();
         try{
             $stmt =  reforestaDB->GetPDO()->prepare("SELECT Suscrito FROM Usuarios WHERE Nickname = :nickname;" );
@@ -174,22 +191,41 @@ class User{
      * @param string $email
      * @param string $password
      */
-    public static function updateUser($nickname,$email,$password){
+    public static function updateUser($nick,$nickname, $name,$apellidos,$email){
         reforestaDB->connect();
         reforestaDB->beginTransaction();
         try{
-            $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Email = :email, Contrasea = :password WHERE Nickname = :nickname;");
+            $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Nombre = :nombre, Apellidos = :apellidos, Email = :email, Nickname = :nickname WHERE Nickname = :nick;");
+            $stmt->bindParam(":nick",$nick);
             $stmt->bindParam(":nickname",$nickname);
+            $stmt->bindParam(":nombre",$name);
+            $stmt->bindParam(":apellidos",$apellidos);
             $stmt->bindParam(":email",$email);
-            $stmt->bindParam(":password",$password);
             $stmt->execute();
             reforestaDB->commit();
-            reforestaDB->disconnect();
         }catch(PDOException $e){
             reforestaDB->rollBack();
             echo "Error: ".$e->getMessage();
+        }finally{
+            reforestaDB->disconnect();
         }
         
+    }
+    public static function updatePassword($nickname, $password){
+        reforestaDB->connect();
+        reforestaDB->beginTransaction();
+        try{
+            $stmt =  reforestaDB->GetPDO()->prepare("UPDATE Usuarios SET Contrasenya = :password WHERE Nickname = :nickname;");
+            $stmt->bindParam(":nickname",$nickname);
+            $stmt->bindParam(":password",$password);
+            $stmt->execute();
+            reforestaDB->commit();
+        }catch(PDOException $e){
+            reforestaDB->rollBack();
+            echo "Error: ".$e->getMessage();
+        }finally{
+            reforestaDB->disconnect();
+        }
     }
 
 }

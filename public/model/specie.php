@@ -2,14 +2,14 @@
     require_once "../db/dataBase.php";
 
     class Especie {
-        private $NombreCientifico;
-        private $Beneficios;
-        private $NombreComun;
-        private $Descripcion;
-        private $Clima;
-        private $RegionOrigen;
-        private $TiempoMaduracion;
-        private $ImagenURL;
+        public $NombreCientifico;
+        public $Beneficios;
+        public $NombreComun;
+        public $Descripcion;
+        public $Clima;
+        public $RegionOrigen;
+        public $TiempoMaduracion;
+        public $ImagenURL;
 
         public function __construct($NombreCientifico, $Beneficios, $NombreComun, $Descripcion, $Clima, $RegionOrigen, $TiempoMaduracion, $ImagenURL) {
             $this->NombreCientifico = $NombreCientifico;
@@ -36,8 +36,10 @@
         }
         /**
          * Devuelve todas las especies
+         * @return array specie
+         * @author Hector Rodriguez
          */
-        public static function GetAll(): array {
+        public static function getAllSpecie(): array {
             $species = [];
             reforestaDB->connect();
             $stmt = reforestaDB->executeQuery("SELECT * FROM Especies");
@@ -103,6 +105,40 @@
              //   echo "Error: ".$e->getMessage();
             }
             return $species;
+        }
+
+        public static function getAllByEvent(){
+            reforestaDB->connect();
+            try{
+                $stmt = reforestaDB->prepare("SELECT NombreCientifico,Beneficios,NombreComun,Descripcion,Clima,RegionOrigen,TiempoMaduracion,ImagenURL FROM Especies JOIN EventosEspecies ON Especies.NombreCientifico = EventosEspecies.EspecieID GROUP BY EventosEspecies.EspecieID;");
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $stmt->execute();
+                $species = [];
+                while ($row = $stmt->fetch()) {
+                    array_push($species, new Especie($row['NombreCientifico'], $row['Beneficios'], $row['NombreComun'], $row['Descripcion'], $row['Clima'], $row['RegionOrigen'], $row['TiempoMaduracion'], $row['ImagenURL']));
+                }
+                reforestaDB->disconnect();
+            }catch(PDOException $e){
+                echo "Error: ".$e->getMessage();
+            }
+            return $species;
+        }
+
+        public static function getSpecieByID($NombreCientifico){
+            reforestaDB->connect();
+            try{
+                $stmt = reforestaDB->prepare("SELECT * FROM Especies WHERE NombreCientifico = :NombreCientifico;");
+                $stmt->bindParam(":NombreCientifico",$NombreCientifico);
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $stmt->execute();
+                $row = $stmt->fetch();
+                $specie = new Especie($row['NombreCientifico'], $row['Beneficios'], $row['NombreComun'], $row['Descripcion'], $row['Clima'], $row['RegionOrigen'], $row['TiempoMaduracion'], $row['ImagenURL']);
+            }catch(PDOException $e){
+                echo "Error: ".$e->getMessage();
+            }finally{
+                reforestaDB->disconnect();
+            }
+            return $specie;
         }
     }
 ?>

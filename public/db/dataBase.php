@@ -20,7 +20,7 @@ class ReforestaDB{
                 $this->pdo = new PDO("mysql:host=".$this->server.";dbname=".$this->db, $this->user, $this->pass);
                 $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 //$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE__SILENT);
-                error_reporting(0);
+                // error_reporting(0);
             }catch(PDOException $e){
                 //echo "Error: ".$e->getMessage();
             }
